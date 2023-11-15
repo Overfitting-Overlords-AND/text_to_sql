@@ -19,8 +19,6 @@ class MultiHeadAttention(nn.Module):
         self.attn_probs = None
         
     def scaled_dot_product_attention(self, Q, K, V, mask=None):
-        print("Shape of Q:", Q.shape)
-        print("Shape of K:", K.shape)
 
         attn_scores = torch.matmul(Q, K.transpose(-2, -1)) / math.sqrt(self.d_k)
         if mask is not None:

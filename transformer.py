@@ -19,7 +19,7 @@ class Transformer(nn.Module):
         self.dropout = nn.Dropout(dropout)
 
     def generate_src_mask(self, srcq, srcc):
-        return (torch.cat((srcq, srcc), dim=0) != 3).unsqueeze(1).unsqueeze(2) # pad_id=3
+        return (torch.cat((srcq, srcc), dim=1) != 3).unsqueeze(1).unsqueeze(2) # pad_id=3
 
     def generate_tgt_mask(self, tgt):
         tgt_mask = (tgt != 3).unsqueeze(1).unsqueeze(3)
