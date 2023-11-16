@@ -22,5 +22,6 @@ spm.SentencePieceTrainer.train(
     vocab_size=constants.VOCAB_SIZE,
     pad_id=3,
     input_sentence_size=constants.INPUT_SENTENCE_SIZE,
-    shuffle_input_sentence=True
+    shuffle_input_sentence=True,
+    user_defined_symbols=["CREATE", "TABLE", "INTEGER", "SELECT", "COUNT(*)", "COUNT", "FROM", "WHERE", "VARCHAR", "ORDER", "MAX", "MIN", "AVG", "BETWEEN", "DISTINCT", "JOIN", "AS", "ON", "GROUP", "BY", "HAVING", "LIMIT", "ASC", "DESC", "LIKE", "INTERSECT", "EXCEPT"]
 )
