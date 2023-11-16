@@ -33,8 +33,8 @@ class Transformer(nn.Module):
     def forward(self, srcq, srcc, tgt):
         src_mask = self.generate_src_mask(srcq, srcc)
         tgt_mask = self.generate_tgt_mask(tgt)
-        q_emb = self.segment_embedding(torch.tensor(0)) + self.encoder_embedding(srcq)
-        c_emb = self.segment_embedding(torch.tensor(1)) + self.encoder_embedding(srcc)
+        q_emb = self.segment_embedding(torch.tensor(0)).to(device) + self.encoder_embedding(srcq)
+        c_emb = self.segment_embedding(torch.tensor(1)).to(device) + self.encoder_embedding(srcc)
         src_embedded = self.dropout(self.positional_encoding(torch.cat((q_emb, c_emb), dim=1)))
         tgt_embedded = self.dropout(self.positional_encoding(self.decoder_embedding(tgt)))
 
