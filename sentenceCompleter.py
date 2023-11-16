@@ -12,14 +12,17 @@ import utilities
 
 def generate(question, context):
 
-  sp = spm.SentencePieceProcessor(model_file='texttosql.model')
+  sp = spm.SentencePieceProcessor(model_file='text_to_sql.model')
   question = torch.tensor(sp.encode_as_ids(question, add_bos=True)).long().unsqueeze(0)
+  print("question shape: ", question.shape)
   context = torch.tensor(sp.encode_as_ids(context, add_bos=True)).long().unsqueeze(0)
+  print("context shape: ", context.shape)
   transformer = Transformer(constants.VOCAB_SIZE, constants.VOCAB_SIZE, constants.D_MODEL, constants.NUM_HEADS, constants.NUM_LAYERS, constants.D_FF, constants.MAX_SEQ_LENGTH, constants.DROPOUT)
   transformer.eval()
   utilities.load_latest_checkpoint(transformer)
   
-  answer = torch.tensor([1]) # <s>=1
+  answer = torch.tensor([[1]]) # <s>=1
+  print("answer shape: ", answer.shape)
   for _ in range(constants.MAX_SEQ_LENGTH):
     with torch.no_grad():
       logits = transformer(question, context, answer) 
@@ -34,6 +37,6 @@ def generate(question, context):
   # plt.show()
   
   output = sp.decode(answer.tolist()[0])
-  print(f"{text} - {output}")
+  print(f"{output}")
   return { "sql" : output } 
 

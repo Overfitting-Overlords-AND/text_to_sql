@@ -18,9 +18,6 @@ def on_root():
 
 @app.post("/text_to_sql")
 async def text_to_sql(request: fastapi.Request):
-  question, context = (await request.json())["question","context"]
-  answer = sentenceCompleter.generate(question, context)
-  print("question", question)
-  print("context", context)
-  print("answer", answer)
+  payload = await request.json()
+  answer = sentenceCompleter.generate(payload["question"], payload["context"])
   return answer
