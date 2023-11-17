@@ -16,8 +16,10 @@ async def startup_event():
 def on_root():
   return { "message": "Hello App" }
 
-@app.post("/text_to_sql")
+@app.post("/from_txt_to_sql")
 async def text_to_sql(request: fastapi.Request):
   payload = await request.json()
-  answer = sentenceCompleter.generate(payload["question"], payload["context"])
+  answer = sentenceCompleter.generate(payload["txt"], payload["cxt"])
+    print("Input txt: ", payload["txt"])
+    print("Input cxt: ", payload["cxt"])
   return answer

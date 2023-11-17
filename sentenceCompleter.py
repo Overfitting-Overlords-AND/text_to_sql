@@ -38,5 +38,5 @@ def generate(question, context):
   
   output = sp.decode(answer.tolist()[0])
   print(f"{output}")
-  return { "sql" : output } 
+  return { "output" : output } 
 
