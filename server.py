@@ -20,6 +20,6 @@ def on_root():
 async def text_to_sql(request: fastapi.Request):
   payload = await request.json()
   answer = sentenceCompleter.generate(payload["txt"], payload["cxt"])
-    print("Input txt: ", payload["txt"])
-    print("Input cxt: ", payload["cxt"])
+  print("Input txt: ", payload["txt"])
+  print("Input cxt: ", payload["cxt"])
   return answer
