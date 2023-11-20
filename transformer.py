@@ -21,8 +21,8 @@ class Transformer(nn.Module):
         self.fc = nn.Linear(d_model, tgt_vocab_size)
         self.dropout = nn.Dropout(dropout)
 
-    def generate_src_mask(self, srcq, srcc):
-        return (torch.cat((srcq, srcc), dim=1) != 3).unsqueeze(1).unsqueeze(2).to(device) # pad_id=3
+    def generate_src_mask(self, src):
+        return (src != 3).unsqueeze(1).unsqueeze(2).to(device) # pad_id=3
 
     def generate_tgt_mask(self, tgt):
         tgt_mask = (tgt != 3).unsqueeze(1).unsqueeze(3)
@@ -30,12 +30,13 @@ class Transformer(nn.Module):
         nopeak_mask = (1 - torch.triu(torch.ones(1, seq_length, seq_length), diagonal=1)).bool().to(device)
         return tgt_mask & nopeak_mask
 
-    def forward(self, srcq, srcc, tgt):
-        src_mask = self.generate_src_mask(srcq, srcc)
+    def forward(self, src, tgt):
+        src_mask = self.generate_src_mask(src)
         tgt_mask = self.generate_tgt_mask(tgt)
-        q_emb = self.segment_embedding(torch.tensor(0).to(device)).to(device) + self.encoder_embedding(srcq).to(device)
-        c_emb = self.segment_embedding(torch.tensor(1).to(device)).to(device) + self.encoder_embedding(srcc).to(device)
-        src_embedded = self.dropout(self.positional_encoding(torch.cat((q_emb, c_emb), dim=1)))
+        # q_emb = self.segment_embedding(torch.tensor(0).to(device)).to(device) + self.encoder_embedding(srcq).to(device)
+        # c_emb = self.segment_embedding(torch.tensor(1).to(device)).to(device) + self.encoder_embedding(srcc).to(device)
+        # src_embedded = self.dropout(self.positional_encoding(torch.cat((q_emb, c_emb), dim=1)))
+        src_embedded = self.dropout(self.positional_encoding(self.encoder_embedding(src)))
         tgt_embedded = self.dropout(self.positional_encoding(self.decoder_embedding(tgt)))
 
         enc_output = src_embedded
